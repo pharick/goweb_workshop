@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"log"
 	"net/http"
 	"path/filepath"
 	"text/template"
@@ -24,7 +25,7 @@ func renderTemplate(w http.ResponseWriter, name string, data map[string]any) {
 	// send the template to the client
 	err = t.ExecuteTemplate(w, name, data)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		log.Printf("Error executing template: %v", err)
 		return
 	}
 }

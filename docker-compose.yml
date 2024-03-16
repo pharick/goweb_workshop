@@ -1,4 +1,5 @@
 services:
+
   db:
     image: postgres:16
     environment:
@@ -9,6 +10,29 @@ services:
       - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
+
+  app:
+    build: ./src
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USERNAME=cool
+      - DB_PASSWORD=coolpassword
+      - DB_DATABASE=cool
+
+  migrations:
+    build: ./migrations
+    platform: linux/amd64
+    depends_on:
+      - db
+    environment:
+      - DB__HOST=db
+      - DB__PORT=5432
+      - DB__USER=cool
+      - DB__PASSWORD=coolpassword
+      - DB__DATABASE=cool
 
 volumes:
   db_data:
